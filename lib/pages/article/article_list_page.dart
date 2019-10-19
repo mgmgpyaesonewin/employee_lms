@@ -19,23 +19,16 @@ class _ArticleListPageState extends State<ArticleListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //  body: _buildBody(context)
-      body: Column(
-        children: <Widget>[
-          
-          Container(
-            height: 88.0,
-          
-            child: Text('Articles',style: TextStyle(color: Colors.white),),
-            width: AppBar().preferredSize.width,
-            color: Colors.blue,
-          ),
-         
-          new Expanded(
-            child: _buildBody(context),
-          )
-        ],
+      appBar: AppBar(
+        title: Text(
+          'Article List',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
+        elevation: 0.0,
       ),
+      body: Container(
+          margin: EdgeInsets.only(top: 10.0), child: _buildBody(context)),
     );
   }
 
@@ -69,46 +62,41 @@ class _ArticleListPageState extends State<ArticleListPage> {
         );
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 5.0,horizontal: 8.0),
+        padding: EdgeInsets.symmetric(
+          vertical: 5.0,
+        ),
         child: Container(
-          height: 180.0,
+          height: 150.0,
           child: Card(
             elevation: 6.0,
-
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Color(
-                              (math.Random().nextDouble() * 0xFFFFFF)
-                                      .toInt() <<
-                                  0)
-                          .withOpacity(1.0),
-                      child: Text(article['title'].toString()[0]),
+                  leading: CircleAvatar(
+                    backgroundColor: Color(
+                            (math.Random().nextDouble() * 0xFFFFFF).toInt() <<
+                                0)
+                        .withOpacity(1.0),
+                    child: Text(article['title'].toString()[0]),
+                  ),
+                  title: Padding(
+                    padding: EdgeInsets.only(bottom: 20.0),
+                    child: Text(
+                      article['title'],
+                      maxLines: 1,
                     ),
-                    title: Padding(
-                      padding: EdgeInsets.only(bottom: 10.0),
-                      child: Text(
-                        article['title'],
-                        maxLines: 1,
-                      ),
-                    ),
-                    subtitle: Text(article['body'],
-                        maxLines: 3, style: TextStyle(fontSize: 16.0)),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.keyboard_arrow_right, size: 40.0)
-                      ],
-                    )),
+                  ),
+                  subtitle: Text(article['body'],
+                      maxLines: 3, style: TextStyle(fontSize: 16.0)),
+                ),
                 new Divider(
-                  color: Colors.blue,
-                  thickness: 0.8,
+                  color: Colors.grey,
+                  thickness: 0.5,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
+                  padding: const EdgeInsets.only(left: 16.0, bottom: 5.0),
                   child: Text(
                     ' Posted On   ${readTimestamp(article['created_at'])}',
                     style: TextStyle(fontSize: 14.0),

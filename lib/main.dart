@@ -1,7 +1,7 @@
 import 'package:employee_lms/pages/article/article_list_page.dart';
 import 'package:employee_lms/pages/login/login_page.dart';
 import 'package:employee_lms/pages/login/login_ui.dart';
-import 'package:employee_lms/pages/main_page.dart';
+import 'package:employee_lms/pages/main/main_page.dart';
 import 'package:employee_lms/pages/splash_screen.dart';
 import 'package:employee_lms/utils/const.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,6 +32,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter App',
+      theme: ThemeData(
+        accentColor: Colors.blue,
+        primaryColor: Colors.white,
+      ),
       // theme: Constants.lightTheme,
       home: _handleCurrentScreen,
     );
@@ -42,10 +46,10 @@ class _MyAppState extends State<MyApp> {
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (BuildContext context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return new SplashScreen();
+            return SplashScreen();
           } else {
             if (snapshot.hasData) {
-              return MainPage(user: snapshot.data);
+              return MainPage();
             }
             return new LoginPage();
           }

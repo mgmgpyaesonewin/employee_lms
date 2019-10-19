@@ -8,73 +8,74 @@ class LeaderBoardPage extends StatefulWidget {
 }
 
 class _LeaderBoardPageState extends State<LeaderBoardPage> {
-  FirebaseUser mCurrentUser;
-
   @override
   Future initState() {
     // TODO: implement initState
     super.initState();
-
-    FirebaseAuth.instance.currentUser().then((user) {
-      setState(() {
-        mCurrentUser = user;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          new Container(
-            height: 250.0,
-            color: Color.fromRGBO(58, 66, 86, .9),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: new FutureBuilder<FirebaseUser>(
+        future: FirebaseAuth.instance.currentUser(),
+        builder: (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(left: 22.0),
-                  child: Text(
-                    '2nd',
-                    style: TextStyle(fontSize: 32.0, color: Colors.white),
-                  ),
-                ),
+                new Container(
+                  height: 250.0,
+                  color: Color.fromRGBO(58, 66, 86, .9),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 22.0),
+                        child: Text(
+                          '2nd',
+                          style: TextStyle(fontSize: 32.0, color: Colors.white),
+                        ),
+                      ),
 
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: new CircleAvatar(
-                    radius: 50.0,
-                    backgroundImage: NetworkImage(mCurrentUser.photoUrl),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: new CircleAvatar(
+                          radius: 50.0,
+                          backgroundImage: NetworkImage(snapshot.data.photoUrl),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 22.0),
+                        child: Text(
+                          '2nd',
+                          style: TextStyle(fontSize: 32.0, color: Colors.white),
+                        ),
+                      ),
+                      // new Text('81pt'),
+                    ],
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(right: 22.0),
-                  child: Text(
-                    '2nd',
-                    style: TextStyle(fontSize: 32.0, color: Colors.white),
+                Expanded(
+                  child: ListView(
+                    children: <Widget>[
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                      new LeaderCard(mCurrentUser: snapshot.data),
+                    ],
                   ),
-                ),
-                // new Text('81pt'),
+                )
               ],
-            ),
-          ),
-          Expanded(
-            child: ListView(
-              children: <Widget>[
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-                new LeaderCard(mCurrentUser: mCurrentUser),
-              ],
-            ),
-          )
-        ],
+            );
+          }else{
+            return Center(child: CircularProgressIndicator());
+          }
+        },
       ),
     );
   }

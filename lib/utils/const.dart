@@ -1,7 +1,16 @@
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Constants {
+
+
+   static SharedPreferences prefs;
+  // static const FirebaseUser userLogin;
+
+
+  
   static Color lightPrimary = Color.fromARGB(79, 131, 204, 1);
   static Color darkPrimary = Color.fromARGB(0, 47, 108, 1);
   static Color lightAccent = Colors.blueGrey[900];
@@ -20,7 +29,7 @@ class Constants {
       
       scaffoldBackgroundColor: lightBG,
       appBarTheme: AppBarTheme(
-        elevation: 0,
+        elevation: 0
         
         
       ));

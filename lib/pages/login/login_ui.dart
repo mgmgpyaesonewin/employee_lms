@@ -1,6 +1,7 @@
 import 'package:employee_lms/pages/article/article_list_page.dart';
-import 'package:employee_lms/pages/main_page.dart';
+import 'package:employee_lms/pages/main/main_page.dart';
 import 'package:employee_lms/utils/auth_utils.dart';
+import 'package:employee_lms/utils/const.dart';
 import 'package:employee_lms/utils/firestore_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class _LoginState extends State<Login> {
         onTap: () {
           _fireAuth.loginIn().then((FirebaseUser user) {
             debugPrint('${user.displayName}');
+            // Constants.prefs.setBool(Constants.userLogin, true);
             _firestoreUtils.uploadUser(user);
             Navigator.push(
               context,
@@ -42,7 +44,6 @@ class _LoginState extends State<Login> {
                 builder: (context) => MainPage(user: user),
               ),
             );
-
           }).catchError((e) => print(e));
         },
         child: Padding(
