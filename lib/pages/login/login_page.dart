@@ -15,7 +15,6 @@ class _LoginPageState extends State<LoginPage> {
 
 
        resizeToAvoidBottomPadding: false,
-        backgroundColor: Colors.white,
         body: Stack(
           children: <Widget>[
             Background(),

@@ -1,4 +1,5 @@
 import 'package:employee_lms/pages/article/article_list_page.dart';
+import 'package:employee_lms/pages/leader/leader_board.dart';
 import 'package:employee_lms/pages/login/login_page.dart';
 import 'package:employee_lms/pages/profile_page.dart';
 import 'package:employee_lms/utils/auth_utils.dart';
@@ -19,45 +20,29 @@ class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
   final List<Widget> _childWidget = [
     ArticleListPage(),
-    ArticleListPage(),
-    ArticleListPage()
+    LeaderBoardPage(),
+    PeoplePage()
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        
-        backgroundColor: Colors.white,
-        elevation: 0.0,
-        actions: <Widget>[
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PeoplePage(user: widget.user)));
-            },
-            child: CircleAvatar(
-              radius: 30.0,
-              backgroundImage: NetworkImage('${widget.user.photoUrl}'),
-            ),
-          ),
-          SizedBox(width: 30.0,)
-        ],
-      ),
       body: _childWidget[_currentIndex],
       bottomNavigationBar: Theme(
-        data: ThemeData(accentColor: Colors.white, brightness: Brightness.dark),
+        data: ThemeData(brightness: Brightness.light),
         child: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
+          fixedColor: Color.fromRGBO(58, 66, 86, .9),
+
           onTap: _onTap, // new
           currentIndex: _currentIndex,
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(Icons.home),
-              title: new Text('Home'),
+              icon: new Icon(MdiIcons.post),
+              title: new Text('Articles'),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.favorite),
-              title: new Text('Favorite'),
+              icon: new Icon(MdiIcons.post),
+              title: new Text('Leader Board'),
             ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.menu), title: Text('Profile'))

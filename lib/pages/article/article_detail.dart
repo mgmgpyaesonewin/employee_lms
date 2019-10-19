@@ -132,7 +132,6 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            
             title: Text('${widget.article['question']}'),
             content: Container(
               width: 350.0,
@@ -154,9 +153,9 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                         //   Navigator.of(context).pop(true);
                         // });
                       } else {
-                       setState(() {
-                         _correctAns = false;
-                       });
+                        setState(() {
+                          _correctAns = false;
+                        });
                       }
                       // return Future.value(false);
                     },

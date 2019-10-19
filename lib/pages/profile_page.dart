@@ -6,27 +6,36 @@ import 'dart:ui' as ui;
 import 'login/login_page.dart';
 
 class PeoplePage extends StatefulWidget {
-  final FirebaseUser user;
+ 
 
-  const PeoplePage({Key key, this.user}) : super(key: key);
   @override
   _PeoplePageState createState() => _PeoplePageState();
 }
 
 class _PeoplePageState extends State<PeoplePage> {
   FireAuth _fireAuth = new FireAuth();
+  FirebaseUser mCurrentUser;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseAuth.instance.currentUser().then((user) {
+      setState(() {
+        mCurrentUser = user;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    final String imgUrl = widget.user.photoUrl;
     return new Stack(
       children: <Widget>[
-        // new Container(
-        //   color: Colors.blue,
-        // ),
+       
         new Image.network(
-          imgUrl,
+          mCurrentUser.photoUrl,
           fit: BoxFit.fill,
         ),
         new BackdropFilter(
@@ -56,13 +65,13 @@ class _PeoplePageState extends State<PeoplePage> {
                   ),
                   new CircleAvatar(
                     radius: _width < _height ? _width / 4 : _height / 4,
-                    backgroundImage: NetworkImage(imgUrl),
+                    backgroundImage: NetworkImage(mCurrentUser.photoUrl),
                   ),
                   new SizedBox(
                     height: _height / 25.0,
                   ),
                   new Text(
-                    '${widget.user.displayName}',
+                    '${mCurrentUser.displayName}',
                     style: new TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: _width / 15,

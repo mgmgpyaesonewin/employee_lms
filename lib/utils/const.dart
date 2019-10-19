@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class Constants {
-  static Color lightPrimary = Color(0xfffcfcff);
-  static Color darkPrimary = Colors.black;
+  static Color lightPrimary = Color.fromARGB(79, 131, 204, 1);
+  static Color darkPrimary = Color.fromARGB(0, 47, 108, 1);
   static Color lightAccent = Colors.blueGrey[900];
   static Color darkAccent = Colors.white;
   static Color lightBG = Color(0xfffcfcff);
@@ -12,41 +12,18 @@ class Constants {
   static Color white = Colors.white;
 
   static ThemeData lightTheme = ThemeData(
+    
       backgroundColor: lightBG,
-      primaryColor: lightPrimary,
-      accentColor: lightAccent,
+      primaryColor: Color.fromARGB(1,79,131,204),
+      accentColor: Color.fromARGB(1, 204, 79, 131),
       cursorColor: lightAccent,
+      
       scaffoldBackgroundColor: lightBG,
       appBarTheme: AppBarTheme(
         elevation: 0,
-        // textTheme: TextTheme(
-        //   title: TextStyle(
-        //     color: darkBG,
-        //     fontSize: 18.0,
-        //     fontWeight: FontWeight.w800,
-        //   ),
-        // ),
+        
+        
       ));
 
-  static ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    backgroundColor: darkBG,
-    primaryColor: darkPrimary,
-    accentColor: darkAccent,
-    scaffoldBackgroundColor: darkBG,
-    cursorColor: darkAccent,
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      textTheme: TextTheme(
-        title: TextStyle(
-          color: lightBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-//      iconTheme: IconThemeData(
-//        color: darkAccent,
-//      ),
-    ),
-  );
+  
 }
