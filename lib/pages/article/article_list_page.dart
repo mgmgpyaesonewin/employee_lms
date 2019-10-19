@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
 class ArticleListPage extends StatefulWidget {
   @override
   _ArticleListPageState createState() => _ArticleListPageState();
@@ -24,7 +26,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
           'Article List',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[400],
         elevation: 0.0,
       ),
       body: Container(
@@ -53,64 +55,71 @@ class _ArticleListPageState extends State<ArticleListPage> {
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot article) {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => ArticalDetailPage(
-                    article: article,
-                  )),
-        );
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 5.0,
-        ),
-        child: Container(
-          height: 150.0,
-          child: Card(
-            elevation: 6.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Color(
-                            (math.Random().nextDouble() * 0xFFFFFF).toInt() <<
-                                0)
-                        .withOpacity(1.0),
-                    child: Text(article['title'].toString()[0]),
-                  ),
-                  title: Padding(
-                    padding: EdgeInsets.only(bottom: 20.0),
-                    child: Text(
-                      article['title'],
-                      maxLines: 1,
-                    ),
-                  ),
-                  subtitle: Text(article['body'],
-                      maxLines: 3, style: TextStyle(fontSize: 16.0)),
-                ),
-                new Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, bottom: 5.0),
-                  child: Text(
-                    ' Posted On   ${readTimestamp(article['created_at'])}',
-                    style: TextStyle(fontSize: 14.0),
-                    textAlign: TextAlign.left,
-                  ),
-                )
-              ],
-            ),
-            // child: Column(
-            //              chil,
-            // ),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => ArticalDetailPage(
+                      article: article,
+                    )),
+          );
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: 5.0,
           ),
-        ),
-      ),
-    );
+          child: Container(
+            height: 150.0,
+            child: Card(
+              elevation: 6.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Color(
+                              (math.Random().nextDouble() * 0xFFFFFF).toInt() <<
+                                  0)
+                          .withOpacity(1.0),
+                      child: Text(article['title'].toString()[0]),
+                    ),
+                    title: Padding(
+                      padding: EdgeInsets.only(bottom: 15.0),
+                      child: Text(
+                        article['title'],
+                        maxLines: 1,
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                    ),
+                    subtitle: Text(article['body'],
+                        maxLines: 3,
+                        style: Theme.of(context).textTheme.subtitle),
+                  ),
+                  new Divider(
+                    color: Colors.grey,
+                    thickness: 0.5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(MdiIcons.tag,size: 20.0,color: Colors.grey,),
+                        SizedBox(width: 5.0),
+                        Text(
+                          ' Posted On  ${readTimestamp(article['created_at'])}',
+                          style: TextStyle(fontSize: 14.0),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              // child: Column(
+              //              chil,
+              // ),
+            ),
+          ),
+        ));
   }
 }

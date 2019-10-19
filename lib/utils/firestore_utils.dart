@@ -1,5 +1,6 @@
 import 'dart:core' as prefix0;
 import 'dart:core';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employee_lms/model/article.dart';
@@ -44,11 +45,28 @@ class FirestoreUtils {
     // return articleList;
   }
 
+  Future<List<User>> getUserListPoint()async{
+    var userList = List<User>();
+    
+       var query =  firestore.collection('flutterusers').orderBy('point',descending: true);
+       await query.getDocuments().then((QuerySnapshot querySnapshot){
+         querySnapshot.documents.map((DocumentSnapshot documentSnapshot){
+
+           userList.add(User.fromMap(documentSnapshot.data));
+
+         }).toList();
+        //  debugPrint('${snapshot.documents.length}');
+       });
+
+       return userList;
+        // debugPrint('${query.getDocuments().then()}')
+  }
+
   Future<void> uploadUser(FirebaseUser cuUser) async {
     DocumentReference ref =
         firestore.collection('flutterusers').document(cuUser.uid);
     var user =
-        User(cuUser.displayName, cuUser.email, cuUser.photoUrl, cuUser.uid);
+        User(cuUser.displayName, cuUser.email, cuUser.photoUrl, cuUser.uid,point: 0);
     await ref.get().then((DocumentSnapshot snapShot) {
       if (!snapShot.exists) {
         ref.setData(user.toMap());

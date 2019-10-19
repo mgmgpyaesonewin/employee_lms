@@ -7,12 +7,14 @@ class User {
 
   User(this.name, this.email, this.profileLink, this.userId, {this.point = 0});
 
-  User.fromMap(Map<String, dynamic> map, this.userId, {this.point = 0})
+  User.fromMap(Map<String, dynamic> map)
       : assert(map['name'] != null),
         assert(map['email'] != null),
         assert(map['profile_link'] != null),
         name = map['name'],
         email = map['email'],
+        point = map['point'],
+        userId = map['userId'],
         profileLink = map['profile_link'];
 
   Map<String, dynamic> toMap() => {

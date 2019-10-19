@@ -36,7 +36,6 @@ class _LoginState extends State<Login> {
         onTap: () {
           _fireAuth.loginIn().then((FirebaseUser user) {
             debugPrint('${user.displayName}');
-            // Constants.prefs.setBool(Constants.userLogin, true);
             _firestoreUtils.uploadUser(user);
             Navigator.push(
               context,

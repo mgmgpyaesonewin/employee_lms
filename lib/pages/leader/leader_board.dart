@@ -1,6 +1,12 @@
+import 'package:employee_lms/model/user.dart';
 import 'package:employee_lms/utils/auth_utils.dart';
+import 'package:employee_lms/utils/firestore_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+
+ int currentUserRank;
 
 class LeaderBoardPage extends StatefulWidget {
   @override
@@ -8,10 +14,17 @@ class LeaderBoardPage extends StatefulWidget {
 }
 
 class _LeaderBoardPageState extends State<LeaderBoardPage> {
+  List<User> users = List<User>();
+
+  FirestoreUtils _firestoreUtils = new FirestoreUtils();
   @override
   Future initState() {
-    // TODO: implement initState
     super.initState();
+    _firestoreUtils.getUserListPoint().then((userList) {
+      setState(() {
+        users = userList;
+      });
+    });
   }
 
   @override
@@ -24,15 +37,16 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
             return Column(
               children: <Widget>[
                 new Container(
-                  height: 250.0,
-                  color: Color.fromRGBO(58, 66, 86, .9),
+                  height: 220.0,
+                  color: Colors.blue[400],
+                  // color: Color.fromRGBO(58, 66, 86, .9),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(left: 22.0),
                         child: Text(
-                          '2nd',
+                          '$currentUserRank',
                           style: TextStyle(fontSize: 32.0, color: Colors.white),
                         ),
                       ),
@@ -56,23 +70,21 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
                   ),
                 ),
                 Expanded(
-                  child: ListView(
-                    children: <Widget>[
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                      new LeaderCard(mCurrentUser: snapshot.data),
-                    ],
+                  child: ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      // if(snapshot.data. == users[index])
+                   
+                      return LeaderCard(
+                        mUser: users[index],
+                        index: index,
+                      );
+                    },
+                    itemCount: users.length,
                   ),
                 )
               ],
             );
-          }else{
+          } else {
             return Center(child: CircularProgressIndicator());
           }
         },
@@ -82,37 +94,46 @@ class _LeaderBoardPageState extends State<LeaderBoardPage> {
 }
 
 class LeaderCard extends StatelessWidget {
-  const LeaderCard({
-    Key key,
-    @required this.mCurrentUser,
-  }) : super(key: key);
+  const LeaderCard({Key key, @required this.mUser, @required this.index})
+      : super(key: key);
 
-  final FirebaseUser mCurrentUser;
+  final User mUser;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
+  
     return new Card(
       elevation: 5.0,
+      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: Container(
-        margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+        padding: EdgeInsets.symmetric(vertical: 18.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             new Text(
-              '1st',
+              '${index + 1}',
               style: TextStyle(fontSize: 14.0),
             ),
             new CircleAvatar(
-              backgroundImage: NetworkImage(mCurrentUser.photoUrl),
+              backgroundImage: NetworkImage(mUser.profileLink),
               radius: 28.0,
             ),
             new Text(
-              mCurrentUser.displayName,
-              style: TextStyle(fontSize: 16.0),
+              mUser.name,
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
             ),
-            new Text(
-              '500pt',
-              style: TextStyle(fontSize: 14.0),
+            new Row(
+              children: <Widget>[
+                Icon(MdiIcons.coin, color: Colors.yellow[600]),
+                Text(
+                  '${mUser.point}',
+                  style: TextStyle(fontSize: 14.0),
+                )
+              ],
+
+              // '500pt',
+              // style: TextStyle(fontSize: 14.0,color: Colors.yellow[800]),
             )
           ],
         ),
