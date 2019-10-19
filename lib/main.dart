@@ -1,6 +1,10 @@
 import 'package:employee_lms/pages/article/article_list_page.dart';
 import 'package:employee_lms/pages/login/login_page.dart';
+import 'package:employee_lms/pages/login/login_ui.dart';
+import 'package:employee_lms/pages/main_page.dart';
+import 'package:employee_lms/pages/splash_screen.dart';
 import 'package:employee_lms/utils/const.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -26,21 +30,25 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-     theme: Constants.lightTheme,
-      initialRoute: '/',
-      routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => ArticleListPage(),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/login': (context) => LoginPage(),
-        // '/profile': (context) => MainPage(),
-        // '/fourth': (context) => PeoplePage(),
-        // '/article': (context) => ArticleList(),
-        // '/articledetail': (context) => DetailPage(),
-        // '/quizdialog':(context) => QuizDialog()
-      },
       debugShowCheckedModeBanner: false,
-      
+      title: 'Flutter App',
+      theme: Constants.lightTheme,
+      home: _handleCurrentScreen,
     );
+  }
+
+  Widget get _handleCurrentScreen {
+    return new StreamBuilder<FirebaseUser>(
+        stream: FirebaseAuth.instance.onAuthStateChanged,
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return new SplashScreen();
+          } else {
+            if (snapshot.hasData) {
+              return MainPage(user: snapshot.data);
+            }
+            return new LoginPage();
+          }
+        });
   }
 }
