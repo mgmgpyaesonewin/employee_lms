@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:employee_lms/model/article.dart';
 import 'package:employee_lms/model/user.dart';
+import 'package:employee_lms/pages/article/article_detail.dart';
 import 'package:employee_lms/utils/firestore_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,36 +15,41 @@ class ArticleListPage extends StatefulWidget {
 class _ArticleListPageState extends State<ArticleListPage> {
   FirestoreUtils _firestoreUtils = new FirestoreUtils();
 
-  final dateFormat = DateFormat("EEEE, d");
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildBody(context));
+    return Scaffold(
+      
+      body: _buildBody(context));
   }
 
   Widget _buildBody(BuildContext context) {
-    return StreamBuilder<List<Article>>(
-      stream: Stream.fromFuture(_firestoreUtils.getArticle()),
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('posts').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Center(
             child: CircularProgressIndicator(),
           );
-        return _buildList(context, snapshot.data);
+        return _buildList(context, snapshot.data.documents);
       },
     );
   }
 
-  Widget _buildList(BuildContext context, List<Article> snapshot) {
+  Widget _buildList(BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView(
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
 
-  Widget _buildListItem(BuildContext context, Article article) {
+  Widget _buildListItem(BuildContext context, DocumentSnapshot article) {
     return GestureDetector(
       onTap: () {
-        // Navigator.pushNamed(context, '/articledetail');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => ArticalDetailPage(
+                    article: article,
+                  )),
+        );
       },
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 5.0),
@@ -61,11 +68,11 @@ class _ArticleListPageState extends State<ArticleListPage> {
                       title: Padding(
                         padding: EdgeInsets.only(bottom: 10.0),
                         child: Text(
-                          article.title,
+                          article['title'],
                           maxLines: 1,
                         ),
                       ),
-                      subtitle: Text(article.body,
+                      subtitle: Text(article['body'],
                           maxLines: 3, style: TextStyle(fontSize: 16.0)),
                       trailing: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +88,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
                   child: Text(
-                    '${DateTime.now()}',
+                    ' Posted On   ${readTimestamp(article['created_at'])}',
                     style: TextStyle(fontSize: 14.0),
                     textAlign: TextAlign.left,
                   ),

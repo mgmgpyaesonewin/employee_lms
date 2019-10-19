@@ -20,11 +20,10 @@ dependencies:
   flutter:
     sdk: flutter
   material_design_icons_flutter: 3.2.4495
-  cloud_firestore: 0.12.9+5  
-  firebase_auth: ^0.14.0+5
-  google_sign_in: ^4.0.7
+  firebase_auth: ^0.6.6
+  google_sign_in: ^3.2.4
+  cloud_firestore: ^0.8.2+3
   intl:
-  built_value: ^6.7.1
    
  
 
@@ -36,7 +35,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner:  
 
 
 # For information on the generic Dart part of this file, see the

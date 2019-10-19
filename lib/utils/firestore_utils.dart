@@ -6,6 +6,7 @@ import 'package:employee_lms/model/article.dart';
 import 'package:employee_lms/model/user.dart';
 import 'package:employee_lms/utils/auth_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class FirestoreUtils {
   static FirestoreUtils _firestoreUtils;
@@ -25,16 +26,22 @@ class FirestoreUtils {
 
   FirestoreUtils._createInstance();
 
-  Future<List<Article>> getArticle() async {
-    var articleList = new List<Article>();
+  Stream<List<Article>> getArticle()  {
+    // var articleList = new List<Article>();
     var collectionRef = firestore.collection('posts');
-    await collectionRef.getDocuments().then((QuerySnapshot snapshot) {
-      snapshot.documents.map((DocumentSnapshot snapshot) {
-        articleList.add(new Article.fromSnapshot(snapshot));
-      }).toList();
+
+
+
+
+     collectionRef.getDocuments().then((QuerySnapshot querySnapshot) {
+      debugPrint('${querySnapshot.documents.length}');
+      querySnapshot.documents.map((_){
+        debugPrint('erewr');
+
+      });
     });
 
-    return articleList;
+    // return articleList;
   }
 
   Future<void> uploadUser(FirebaseUser cuUser) async {
