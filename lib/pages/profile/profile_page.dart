@@ -82,7 +82,7 @@ class _PeoplePageState extends State<PeoplePage> {
                             left: _width / 8,
                             right: _width / 8),
                         child: new Text(
-                          'Snowboarder, Superhero and writer.\nSometime I work at google as Executive Chairman ',
+                          'Snowboarder, Superhero and writer. ',
                           style: new TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: _width / 25,

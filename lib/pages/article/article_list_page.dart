@@ -68,7 +68,7 @@ class _ArticleListPageState extends State<ArticleListPage> {
             vertical: 5.0,
           ),
           child: Container(
-            height: 150.0,
+            height: 250.0,
             child: Card(
               elevation: 6.0,
               child: Column(

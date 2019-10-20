@@ -37,9 +37,11 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 120.0),
-        Text(
-          widget.article['title'],
-          style: TextStyle(color: Colors.white, fontSize: 35.0),
+        Expanded(
+          child: Text(
+            widget.article['title'],
+            style: TextStyle(color: Colors.white, fontSize: 35.0),
+          ),
         ),
         SizedBox(height: 30.0),
         Row(
@@ -142,7 +144,7 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
             title: Text('${widget.article['question']}'),
             content: Container(
               width: 350.0,
-              height: 350.0,
+              height: 450.0,
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 15.0),
