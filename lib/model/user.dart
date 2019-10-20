@@ -17,7 +17,7 @@ class User {
         email = map['email'],
         point = map['point'],
         userId = map['userId'],
-        quiz = map['quiz'],
+        quiz = map['quizCount'],
         profileLink = map['profile_link'];
 
   Map<String, dynamic> toMap() => {
@@ -25,7 +25,7 @@ class User {
         'profile_link': profileLink,
         'userId': userId,
         'email': email,
-        'quiz': quiz,
+        'quizCount': quiz,
         'point': point
       };
 

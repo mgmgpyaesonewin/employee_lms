@@ -22,7 +22,7 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
   bool _isSelected = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
 
@@ -74,7 +74,7 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
             height: MediaQuery.of(context).size.height * 0.5,
             decoration: new BoxDecoration(
               image: new DecorationImage(
-                image: new NetworkImage("https://picsum.photos/250?image=9"),
+                image: new NetworkImage('https://frontera.net/wp-content/uploads/2017/11/bigstock-Textile-And-Garment-Factory-204454279.jpg'),
                 fit: BoxFit.cover,
               ),
             )),
@@ -155,22 +155,33 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                         setState(() {
                           _correctAns = true;
                         });
-                        FirebaseUser snapshot = await FirebaseAuth.instance.currentUser();
+                        FirebaseUser snapshot =
+                            await FirebaseAuth.instance.currentUser();
                         var uid = snapshot.uid;
                         var points = 0;
                         var quizCount = 0;
-                        QuerySnapshot userQuery = await Firestore.instance.collection('flutterusers').where('userId', isEqualTo: uid).getDocuments();
-                          // .snapshots().listen((data) async {
+                        QuerySnapshot userQuery = await Firestore.instance
+                            .collection('flutterusers')
+                            .where('userId', isEqualTo: uid)
+                            .getDocuments();
+                        // .snapshots().listen((data) async {
                         points = userQuery.documents[0]['point'] + 2;
                         quizCount = userQuery.documents[0]['quizCount'] + 1;
-                          //   }
-                          // );
-                        await Firestore.instance.collection('flutterusers').document(uid).updateData({'point': points,'quizCount': quizCount});
+                        //   }
+                        // );
+                        await Firestore.instance
+                            .collection('flutterusers')
+                            .document(uid)
+                            .updateData(
+                                {'point': points, 'quizCount': quizCount});
                       } else {
                         setState(() {
                           _correctAns = false;
                         });
                       }
+
+                      Future.delayed(Duration(seconds: 3));
+                      Navigator.of(context).pop(_correctAns);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(0.0),
@@ -181,19 +192,53 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                   MaterialButton(
                     child: Text('${widget.article['quiz'][1]['choc']}'),
                     minWidth: 250.0,
-                    onPressed: () {
+                    onPressed: () async{
+
                       _isSelected = true;
-                      if (widget.article['quiz'][1]['ans'] == "true") {
+                      if (widget.article['quiz'][0]['ans'] == "true") {
                         setState(() {
                           _correctAns = true;
                         });
-                        // Future.delayed(Duration(seconds: 3));
-                        // Navigator.of(context).pop(true);
+                        FirebaseUser snapshot =
+                            await FirebaseAuth.instance.currentUser();
+                        var uid = snapshot.uid;
+                        var points = 0;
+                        var quizCount = 0;
+                        QuerySnapshot userQuery = await Firestore.instance
+                            .collection('flutterusers')
+                            .where('userId', isEqualTo: uid)
+                            .getDocuments();
+                        // .snapshots().listen((data) async {
+                        points = userQuery.documents[0]['point'] + 2;
+                        quizCount = userQuery.documents[0]['quizCount'] + 1;
+                        //   }
+                        // );
+                        await Firestore.instance
+                            .collection('flutterusers')
+                            .document(uid)
+                            .updateData(
+                                {'point': points, 'quizCount': quizCount});
                       } else {
                         setState(() {
                           _correctAns = false;
                         });
                       }
+
+                      Future.delayed(Duration(seconds: 3));
+                      Navigator.of(context).pop(_correctAns);
+                      // _isSelected = true;
+                      // if (widget.article['quiz'][1]['ans'] == "true") {
+                      //   setState(() {
+                      //     _correctAns = true;
+                      //   });
+                      //   // Future.delayed(Duration(seconds: 3));
+                      // } else {
+                      //   setState(() {
+                      //     _correctAns = false;
+                      //   });
+                      // }
+                      // Future.delayed(Duration(seconds: 3));
+                      // Navigator.of(context).pop(_correctAns);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(0.0),
@@ -204,19 +249,52 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                   MaterialButton(
                     child: Text('${widget.article['quiz'][2]['choc']}'),
                     minWidth: 250.0,
-                    onPressed: () {
+                    onPressed: ()async {
+
                       _isSelected = true;
-                      if (widget.article['quiz'][2]['ans'] == "true") {
+                      if (widget.article['quiz'][0]['ans'] == "true") {
                         setState(() {
                           _correctAns = true;
                         });
-                        // Future.delayed(Duration(seconds: 3));
-                        // Navigator.of(context).pop(true);
+                        FirebaseUser snapshot =
+                            await FirebaseAuth.instance.currentUser();
+                        var uid = snapshot.uid;
+                        var points = 0;
+                        var quizCount = 0;
+                        QuerySnapshot userQuery = await Firestore.instance
+                            .collection('flutterusers')
+                            .where('userId', isEqualTo: uid)
+                            .getDocuments();
+                        // .snapshots().listen((data) async {
+                        points = userQuery.documents[0]['point'] + 2;
+                        quizCount = userQuery.documents[0]['quizCount'] + 1;
+                        //   }
+                        // );
+                        await Firestore.instance
+                            .collection('flutterusers')
+                            .document(uid)
+                            .updateData(
+                                {'point': points, 'quizCount': quizCount});
                       } else {
                         setState(() {
                           _correctAns = false;
                         });
                       }
+
+                      Future.delayed(Duration(seconds: 3));
+                      Navigator.of(context).pop(_correctAns);
+                      // _isSelected = true;
+                      // if (widget.article['quiz'][2]['ans'] == "true") {
+                      //   setState(() {
+                      //     _correctAns = true;
+                      //   });
+                      //   Future.delayed(Duration(seconds: 3));
+                      //   Navigator.of(context).pop(_correctAns);
+                      // } else {
+                      //   setState(() {
+                      //     _correctAns = false;
+                      //   });
+                      // }
                       // Navigator.pop(context);
                       // return Future.value(false);
                     },
@@ -229,17 +307,52 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                   MaterialButton(
                     child: Text('${widget.article['quiz'][3]['choc']}'),
                     minWidth: 250.0,
-                    onPressed: () {
+                    onPressed: () async{
                       _isSelected = true;
-                      if (widget.article['quiz'][3]['ans'] == "true") {
+                      if (widget.article['quiz'][0]['ans'] == "true") {
                         setState(() {
                           _correctAns = true;
                         });
+                        FirebaseUser snapshot =
+                            await FirebaseAuth.instance.currentUser();
+                        var uid = snapshot.uid;
+                        var points = 0;
+                        var quizCount = 0;
+                        QuerySnapshot userQuery = await Firestore.instance
+                            .collection('flutterusers')
+                            .where('userId', isEqualTo: uid)
+                            .getDocuments();
+                        // .snapshots().listen((data) async {
+                        points = userQuery.documents[0]['point'] + 2;
+                        quizCount = userQuery.documents[0]['quizCount'] + 1;
+                        //   }
+                        // );
+                        await Firestore.instance
+                            .collection('flutterusers')
+                            .document(uid)
+                            .updateData(
+                                {'point': points, 'quizCount': quizCount});
                       } else {
                         setState(() {
                           _correctAns = false;
                         });
                       }
+
+                      Future.delayed(Duration(seconds: 3));
+                      Navigator.of(context).pop(_correctAns);
+                      // _isSelected = true;
+                      // if (widget.article['quiz'][3]['ans'] == "true") {
+                      //   setState(() {
+                      //     _correctAns = true;
+                      //   });
+                      // } else {
+                      //   setState(() {
+                      //     _correctAns = false;
+                      //   });
+                      // }
+
+                      // Future.delayed(Duration(seconds: 3));
+                      // Navigator.of(context).pop(_correctAns);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(0.0),
@@ -248,8 +361,16 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                   ),
                   SizedBox(height: 8.0),
                   Text(
-                    _correctAns && _isSelected ? 'Your answer is correct' : _isSelected ? 'The answer is worng' : 'Choose correct answer',
-                    style: _correctAns && _isSelected ? TextStyle(color: Colors.green) : _isSelected ? TextStyle(color: Colors.red) : TextStyle(color: Colors.grey),
+                    _correctAns && _isSelected
+                        ? 'Your answer is correct'
+                        : _isSelected
+                            ? 'The answer is worng'
+                            : 'Choose correct answer',
+                    style: _correctAns && _isSelected
+                        ? TextStyle(color: Colors.green)
+                        : _isSelected
+                            ? TextStyle(color: Colors.red)
+                            : TextStyle(color: Colors.grey),
                   ),
                 ],
               ),
