@@ -40,6 +40,15 @@ class FireAuth {
     return user;
   }
 
+  Future<String> getCurrentUserId()async {
+    String uid ='';
+    await FirebaseAuth.instance.currentUser().then((user) {
+      uid = user.uid;
+    });
+
+    return uid;
+  }
+
   // Future<FirebaseUser> getCurrentUser() async {
   //   FirebaseUser user;
   //   await FirebaseAuth.instance.currentUser().then((u) {

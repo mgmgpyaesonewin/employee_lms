@@ -14,10 +14,13 @@ class PeoplePage extends StatefulWidget {
 class _PeoplePageState extends State<PeoplePage> {
   FireAuth _fireAuth = new FireAuth();
   FirestoreUtils _firestoreUtils = new FirestoreUtils();
+  String currentUserId;
 
   @override
   void initState() {
     super.initState();
+
+    _fireAuth.getCurrentUserId().then((userId) => currentUserId = userId);
 
     // _firestoreUtils.getPointRewardForUsers()
   }
@@ -92,8 +95,35 @@ class _PeoplePageState extends State<PeoplePage> {
                       ),
                       new Row(
                         children: <Widget>[
-                          rowCell(343, 'QUIZ', snapshot.data.uid),
-                          rowCell(456, 'POINTS', snapshot.data.uid),
+                          new Expanded(
+                              child: new Column(
+                            children: <Widget>[
+                              new Text(
+                                '26',
+                                style: new TextStyle(color: Colors.black),
+                              ),
+                              new Text("QUIZ",
+                                  style: new TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.normal))
+                            ],
+                          )),
+
+                          new Expanded(
+                              child: new Column(
+                            children: <Widget>[
+                              new Text(
+                                '150',
+                                style: new TextStyle(color: Colors.black),
+                              ),
+                              new Text("Rewards",
+                                  style: new TextStyle(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.normal))
+                            ],
+                          )),
+                          // rowCell(343, 'QUIZ', snapshot.data.uid,context),
+                          // rowCell(456, 'POINTS', snapshot.data.uid,context),
                         ],
                       ),
                       new Divider(height: _height / 30, color: Colors.white),
@@ -106,15 +136,16 @@ class _PeoplePageState extends State<PeoplePage> {
                             left: _width / 8, right: _width / 8),
                         child: new FlatButton(
                           onPressed: () {
-                            getPointForUser(snapshot.data.uid);
-                            //  _firestoreUtils.getPointRewardForUsers(snapshot.data.uid);
+                            // getPointForUser(snapshot.data.uid);
+                            _firestoreUtils
+                                .getPointRewardForUsers(snapshot.data.uid);
 
-                            // _fireAuth.signOut().then((_) {
-                            //   Navigator.of(context).push(
-                            //     MaterialPageRoute(
-                            //         builder: (context) => LoginPage()),
-                            //   );
-                            // }).catchError((e) => print(e));
+                            _fireAuth.signOut().then((_) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                              );
+                            }).catchError((e) => print(e));
                           },
                           child: new Container(
                               child: new Row(
@@ -127,7 +158,7 @@ class _PeoplePageState extends State<PeoplePage> {
                               new Text('Log out')
                             ],
                           )),
-                          color: Colors.blue[50],
+                          color: Colors.blue[400],
                         ),
                       ),
                     ],
@@ -144,28 +175,9 @@ class _PeoplePageState extends State<PeoplePage> {
     );
   }
 
-  Widget rowCell(int count, String type, String uid) {
-    int _point = 0;
-    getPointForUser(uid)
-      .then((val) {
-        _point = val;
-      });
-    return new Expanded(
-          child: new Column(
-        children: <Widget>[
-          new Text(
-            '$_point',
-            style: new TextStyle(color: Colors.black),
-          ),
-          new Text(type,
-              style: new TextStyle(
-                  color: Colors.blue, fontWeight: FontWeight.normal))
-        ],
-      ));
-  }
+ 
 
-  getPointForUser(String userId) async {
-    //  debugPrint('${_firestoreUtils.getPointRewardForUsers(userId).runtimeType}');
-    return await _firestoreUtils.getPointRewardForUsers(userId);
-  }
+  // getPointForUser(String userId) async {
+  //   debugPrint('efrw'  _firestoreUtils.getPointRewardForUsers(userId));
+  // }
 }

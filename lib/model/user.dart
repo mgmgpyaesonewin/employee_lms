@@ -4,8 +4,10 @@ class User {
   final String email;
   final int point;
   final String userId;
+  final int quiz;
 
-  User(this.name, this.email, this.profileLink, this.userId, {this.point = 0});
+  User(this.name, this.email, this.profileLink, this.userId,
+      {this.point = 0, this.quiz = 0});
 
   User.fromMap(Map<String, dynamic> map)
       : assert(map['name'] != null),
@@ -15,6 +17,7 @@ class User {
         email = map['email'],
         point = map['point'],
         userId = map['userId'],
+        quiz = map['quiz'],
         profileLink = map['profile_link'];
 
   Map<String, dynamic> toMap() => {
@@ -22,6 +25,7 @@ class User {
         'profile_link': profileLink,
         'userId': userId,
         'email': email,
+        'quiz': quiz,
         'point': point
       };
 

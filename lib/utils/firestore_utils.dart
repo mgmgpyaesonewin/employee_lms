@@ -58,8 +58,7 @@ class FirestoreUtils {
   getPointRewardForUsers(String userId) async {
    QuerySnapshot userQuery = await Firestore.instance.collection('flutterusers').where('userId', isEqualTo: userId)
     .getDocuments();
-    debugPrint('${userQuery.documents[0]['point']}');
-    // return userQuery.documents[0]['point'];
+    return userQuery.documents[0]['point'];
   }
 
   Future<void> uploadUser(FirebaseUser cuUser) async {
@@ -67,7 +66,7 @@ class FirestoreUtils {
         firestore.collection('flutterusers').document(cuUser.uid);
     var user = User(
         cuUser.displayName, cuUser.email, cuUser.photoUrl, cuUser.uid,
-        point: 0);
+        point: 0,quiz: 0);
     await ref.get().then((DocumentSnapshot snapShot) {
       if (!snapShot.exists) {
         ref.setData(user.toMap());
