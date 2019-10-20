@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 String readTimestamp(DateTime timestamp) {
   debugPrint('$timestamp eafewf');
@@ -18,6 +18,14 @@ class ArticalDetailPage extends StatefulWidget {
 }
 
 class _ArticalDetailPageState extends State<ArticalDetailPage> {
+  bool _correctAns = false;
+  bool _isSelected = false;
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -93,7 +101,7 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
     );
 
     final bottomContentText = Text(
-      "Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.Consectetur sit sit ea qui commodo occaecat id pariatur.",
+      widget.article['body'],
       style: TextStyle(fontSize: 18.0),
     );
     final readButton = Container(
@@ -126,7 +134,6 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
   }
 
   Future<bool> _openDialog(BuildContext context) {
-    bool _correctAns = false;
     return showDialog<bool>(
         context: context,
         barrierDismissible: false,
@@ -140,24 +147,30 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                 children: <Widget>[
                   SizedBox(height: 15.0),
                   MaterialButton(
-                    color: _correctAns ? Colors.green : null,
                     child: Text('${widget.article['quiz'][0]['choc']}'),
                     minWidth: 250.0,
-                    onPressed: () {
+                    onPressed: () async {
+                      _isSelected = true;
                       if (widget.article['quiz'][0]['ans'] == "true") {
                         setState(() {
                           _correctAns = true;
                         });
-
-                        // Future.delayed(Duration(seconds: 3)).then((_) {
-                        //   Navigator.of(context).pop(true);
-                        // });
+                        FirebaseUser snapshot = await FirebaseAuth.instance.currentUser();
+                        var uid = snapshot.uid;
+                        var points = 0;
+                        var quizCount = 0;
+                        QuerySnapshot userQuery = await Firestore.instance.collection('flutterusers').where('userId', isEqualTo: uid).getDocuments();
+                          // .snapshots().listen((data) async {
+                        points = userQuery.documents[0]['point'] + 2;
+                        quizCount = userQuery.documents[0]['quizCount'] + 1;
+                          //   }
+                          // );
+                        await Firestore.instance.collection('flutterusers').document(uid).updateData({'point': points,'quizCount': quizCount});
                       } else {
                         setState(() {
                           _correctAns = false;
                         });
                       }
-                      // return Future.value(false);
                     },
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(0.0),
@@ -166,19 +179,20 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                   ),
                   SizedBox(height: 8.0),
                   MaterialButton(
-                    color: _correctAns ? Colors.green : null,
                     child: Text('${widget.article['quiz'][1]['choc']}'),
                     minWidth: 250.0,
                     onPressed: () {
+                      _isSelected = true;
                       if (widget.article['quiz'][1]['ans'] == "true") {
                         setState(() {
                           _correctAns = true;
                         });
-                        Future.delayed(Duration(seconds: 3));
-
-                        Navigator.of(context).pop(true);
+                        // Future.delayed(Duration(seconds: 3));
+                        // Navigator.of(context).pop(true);
                       } else {
-                        Navigator.of(context).pop(false);
+                        setState(() {
+                          _correctAns = false;
+                        });
                       }
                     },
                     shape: RoundedRectangleBorder(
@@ -188,23 +202,22 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                   ),
                   SizedBox(height: 8.0),
                   MaterialButton(
-                    color: _correctAns ? Colors.green : null,
                     child: Text('${widget.article['quiz'][2]['choc']}'),
                     minWidth: 250.0,
                     onPressed: () {
+                      _isSelected = true;
                       if (widget.article['quiz'][2]['ans'] == "true") {
                         setState(() {
                           _correctAns = true;
                         });
-                        Future.delayed(Duration(seconds: 3));
-
-                        Navigator.of(context).pop(true);
+                        // Future.delayed(Duration(seconds: 3));
+                        // Navigator.of(context).pop(true);
                       } else {
-                        Navigator.of(context).pop(false);
+                        setState(() {
+                          _correctAns = false;
+                        });
                       }
-
                       // Navigator.pop(context);
-
                       // return Future.value(false);
                     },
                     shape: RoundedRectangleBorder(
@@ -214,19 +227,18 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                   ),
                   SizedBox(height: 8.0),
                   MaterialButton(
-                    color: _correctAns ? Colors.green : null,
                     child: Text('${widget.article['quiz'][3]['choc']}'),
                     minWidth: 250.0,
                     onPressed: () {
+                      _isSelected = true;
                       if (widget.article['quiz'][3]['ans'] == "true") {
                         setState(() {
                           _correctAns = true;
                         });
-                        Future.delayed(Duration(seconds: 3));
-
-                        Navigator.of(context).pop(true);
                       } else {
-                        Navigator.of(context).pop(false);
+                        setState(() {
+                          _correctAns = false;
+                        });
                       }
                     },
                     shape: RoundedRectangleBorder(
@@ -235,6 +247,10 @@ class _ArticalDetailPageState extends State<ArticalDetailPage> {
                             BorderSide(color: Color.fromRGBO(58, 66, 86, 1.0))),
                   ),
                   SizedBox(height: 8.0),
+                  Text(
+                    _correctAns && _isSelected ? 'Your answer is correct' : _isSelected ? 'The answer is worng' : 'Choose correct answer',
+                    style: _correctAns && _isSelected ? TextStyle(color: Colors.green) : _isSelected ? TextStyle(color: Colors.red) : TextStyle(color: Colors.grey),
+                  ),
                 ],
               ),
             ),

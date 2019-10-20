@@ -55,6 +55,7 @@ class _PeoplePageState extends State<PeoplePage> {
             builder:
                 (BuildContext context, AsyncSnapshot<FirebaseUser> snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
+                debugPrint('${snapshot.data}');
                 return new Center(
                   child: new Column(
                     children: <Widget>[
