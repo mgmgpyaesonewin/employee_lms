@@ -1,5 +1,7 @@
+import 'package:employee_lms/model/user.dart';
 import 'package:employee_lms/pages/login/login_page.dart';
 import 'package:employee_lms/utils/auth_utils.dart';
+import 'package:employee_lms/utils/firestore_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
@@ -11,21 +13,21 @@ class PeoplePage extends StatefulWidget {
 
 class _PeoplePageState extends State<PeoplePage> {
   FireAuth _fireAuth = new FireAuth();
+  FirestoreUtils _firestoreUtils = new FirestoreUtils();
 
   @override
   void initState() {
     super.initState();
+
+    // _firestoreUtils.getPointRewardForUsers()
   }
 
   @override
   Widget build(BuildContext context) {
-   
-     
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
     return new Stack(
       children: <Widget>[
-       
         new BackdropFilter(
             filter: new ui.ImageFilter.blur(
               sigmaX: 6.0,
@@ -90,42 +92,29 @@ class _PeoplePageState extends State<PeoplePage> {
                       ),
                       new Row(
                         children: <Widget>[
-                          rowCell(343, 'POSTS'),
-                          rowCell(673826, 'FOLLOWERS'),
-                          rowCell(275, 'FOLLOWING'),
+                          rowCell(343, 'QUIZ', snapshot.data.uid),
+                          rowCell(456, 'POINTS', snapshot.data.uid),
                         ],
                       ),
                       new Divider(height: _height / 30, color: Colors.white),
                       new Padding(
                         padding: new EdgeInsets.only(
                             left: _width / 8, right: _width / 8),
-                        child: new FlatButton(
-                          onPressed: () {},
-                          child: new Container(
-                              child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              new Icon(Icons.person),
-                              new SizedBox(
-                                width: _width / 30,
-                              ),
-                              new Text('FOLLOW')
-                            ],
-                          )),
-                          color: Colors.blue[50],
-                        ),
                       ),
                       new Padding(
                         padding: new EdgeInsets.only(
                             left: _width / 8, right: _width / 8),
                         child: new FlatButton(
                           onPressed: () {
-                            _fireAuth.signOut().then((_) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                              );
-                            }).catchError((e) => print(e));
+                            getPointForUser(snapshot.data.uid);
+                            //  _firestoreUtils.getPointRewardForUsers(snapshot.data.uid);
+
+                            // _fireAuth.signOut().then((_) {
+                            //   Navigator.of(context).push(
+                            //     MaterialPageRoute(
+                            //         builder: (context) => LoginPage()),
+                            //   );
+                            // }).catchError((e) => print(e));
                           },
                           child: new Container(
                               child: new Row(
@@ -144,7 +133,7 @@ class _PeoplePageState extends State<PeoplePage> {
                     ],
                   ),
                 );
-              }else{
+              } else {
                 return Center(child: new CircularProgressIndicator());
               }
             },
@@ -155,11 +144,17 @@ class _PeoplePageState extends State<PeoplePage> {
     );
   }
 
-  Widget rowCell(int count, String type) => new Expanded(
+  Widget rowCell(int count, String type, String uid) {
+    int _point = 0;
+    getPointForUser(uid)
+      .then((val) {
+        _point = val;
+      });
+    return new Expanded(
           child: new Column(
         children: <Widget>[
           new Text(
-            '$count',
+            '$_point',
             style: new TextStyle(color: Colors.black),
           ),
           new Text(type,
@@ -167,4 +162,10 @@ class _PeoplePageState extends State<PeoplePage> {
                   color: Colors.blue, fontWeight: FontWeight.normal))
         ],
       ));
+  }
+
+  getPointForUser(String userId) async {
+    //  debugPrint('${_firestoreUtils.getPointRewardForUsers(userId).runtimeType}');
+    return await _firestoreUtils.getPointRewardForUsers(userId);
+  }
 }
